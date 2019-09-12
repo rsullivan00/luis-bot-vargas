@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+curl -o data/scryfall-default-cards.json https://archive.scryfall.com/json/scryfall-default-cards.json
