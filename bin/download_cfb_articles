@@ -4,7 +4,7 @@ ARTICLE_PREFIX=https://www.channelfireball.com/articles
 CFB_DATA_LOCATION=data/cfb
 
 if [ $# -eq 0 ]; then
-  echo "Usage: bin/scrape_cfb_article <URL>"
+  echo "Usage: bin/download_cfb_articles <URL>"
   exit 1
 fi
 
