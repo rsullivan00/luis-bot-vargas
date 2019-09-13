@@ -29,6 +29,7 @@ for filename in glob.glob('data/cfb/*.html'):
                 continue
 
             card_name = heading.get_text()
+
         print(cards)
 
 
