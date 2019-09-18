@@ -19,4 +19,4 @@ for row in data.itertuples():
 
     print('Downloading {}'.format(url))
     with open(html_name, 'w') as html_file:
-        html_file.write(requests.get(url).text)
+        html_file.write(requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}).text)

@@ -1,16 +1,3 @@
 #!/usr/bin/env bash
 
-ARTICLE_PREFIX=https://www.channelfireball.com/articles
-CFB_DATA_LOCATION=data/cfb
-
-if [ $# -eq 0 ]; then
-  echo "Usage: bin/download_cfb_articles <URL>"
-  exit 1
-fi
-
-mkdir -p $CFB_DATA_LOCATION
-
-ARTICLE_NAME=${1#"$ARTICLE_PREFIX"}
-ARTICLE_NAME=${ARTICLE_NAME%"/"}
-
-curl -o $CFB_DATA_LOCATION/$ARTICLE_NAME.html $1
+pipenv run python src/download_cfb.py
