@@ -40,10 +40,13 @@ for filename in glob.glob('data/cfb/*/*.html'):
             next_sibling = heading.find_next_sibling()
             if not next_sibling:
                 continue
-            card_img = next_sibling.find('img')
+            card_link = next_sibling.find('a')
+            if not card_link:
+                continue
             html_name = heading.get_text()
             cleaned_name = clean_name(html_name)
-            if not card_img or not card_img['alt'] in (html_name, cleaned_name):
+            card_link_name = card_link.get('data-name')
+            if not card_link_name or not card_link_name in (html_name, cleaned_name):
                 continue
 
             card_name = cleaned_name
