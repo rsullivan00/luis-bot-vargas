@@ -52,7 +52,7 @@ for filename in glob.glob('data/cfb/*/*.html'):
             card_name = cleaned_name
 
         df = pd.DataFrame.from_records(cards, columns=['name', 'score'])
-        df['set_name'] = set_name
+        df['set'] = set_name
         dfs.append(df)
 
 df = pd.concat(dfs)
