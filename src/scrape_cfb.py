@@ -25,10 +25,10 @@ for filename in glob.glob('data/cfb/*/*.html'):
         cards = []
         card_name = None
         score = None
-        for heading in headings:
+        for item in soup.select('a[data-name],h1,h2,h3,h4'):
             # Scores are prefixed by `Limited: `
-            if heading.get_text().startswith('Limited:'):
-                score = re.sub(r'Limited:\s*', '', heading.get_text())
+            if item.get_text().startswith('Limited:'):
+                score = re.sub(r'Limited:\s*', '', item.get_text())
                 if not len(score):
                     continue
                 if card_name is None:
@@ -37,21 +37,11 @@ for filename in glob.glob('data/cfb/*/*.html'):
                     continue
                 cards.append([card_name, score])
                 card_name = None
-
-            # Card Titles are in Headings and on image alt texts
-            next_sibling = heading.find_next_sibling()
-            if not next_sibling:
-                continue
-            card_link = next_sibling.find('a')
-            if not card_link:
-                continue
-            html_name = heading.get_text()
-            cleaned_name = clean_name(html_name)
-            card_link_name = card_link.get('data-name')
-            if not card_link_name or not card_link_name in (html_name, cleaned_name):
                 continue
 
-            card_name = cleaned_name
+            if not item.get('data-name'):
+                continue
+            card_name = clean_name(item.get('data-name'))
 
         df = pd.DataFrame.from_records(cards, columns=['name', 'score'])
         df['set'] = set_name
@@ -61,3 +51,4 @@ df = pd.concat(dfs)
 df.to_csv('data/lsv_scores.csv')
 if error_count:
     print('{} warnings'.format(error_count))
+print('{} card scores found'.format(len(df.index)))
