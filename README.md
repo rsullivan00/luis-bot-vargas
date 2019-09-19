@@ -28,3 +28,32 @@ bin/extract_cfb_ratings
 ```
 
 You should now have a bunch of stuff in the `data/` directory
+
+
+## Progress
+
+
+Step 1: Linear regression against certain attributes?
+
+TODO: Convert `type_line` into several categories
+
+Things before `-` in type line:
+  Land - Y/N
+  Instant - Y/N
+  Sorcery - Y/N
+  Creature - Y/N
+  Enchantment - Y/N
+  Artifact - Y/N
+  Legendary - Y/N
+
+Things after `-` in type line are probably less important, but could be:
+  Bird
+  Zombie
+  Human
+  etc.
+
+
+Instant/Sorcery/Creature/Enchantment/Artifact (or combo of)
+
+
+Step 2: 
