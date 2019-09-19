@@ -6,9 +6,6 @@ import pandas as pd
 import os
 
 
-def clean_name(html_name):
-    return re.sub(r'[`’]', "'", html_name)
-
 """
 Reads all HTML files in `data/cfb` and extracts card names and their scores to
 a CSV.
@@ -41,7 +38,7 @@ for filename in glob.glob('data/cfb/*/*.html'):
 
             if not item.get('data-name'):
                 continue
-            card_name = clean_name(item.get('data-name'))
+            card_name = item.get('data-name')
 
         df = pd.DataFrame.from_records(cards, columns=['name', 'score'])
         df['set'] = set_name
