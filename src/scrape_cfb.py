@@ -14,6 +14,7 @@ Reads all HTML files in `data/cfb` and extracts card names and their scores to
 a CSV.
 """
 dfs = []
+error_count = 0
 for filename in glob.glob('data/cfb/*/*.html'):
     print('Processing {}'.format(filename))
     with open(filename) as fp:
@@ -31,6 +32,7 @@ for filename in glob.glob('data/cfb/*/*.html'):
                 if not len(score):
                     continue
                 if card_name is None:
+                    error_count += 1
                     print('Warning: Found score without card name. File: {} Score: {}'.format(filename, score), file=sys.stderr)
                     continue
                 cards.append([card_name, score])
@@ -57,3 +59,5 @@ for filename in glob.glob('data/cfb/*/*.html'):
 
 df = pd.concat(dfs)
 df.to_csv('data/lsv_scores.csv')
+if error_count:
+    print('{} warnings'.format(error_count))
