@@ -32,28 +32,14 @@ You should now have a bunch of stuff in the `data/` directory
 
 ## Progress
 
+### Step 0: Use mean score
 
-Step 1: Linear regression against certain attributes?
-
-TODO: Convert `type_line` into several categories
-
-Things before `-` in type line:
-  Land - Y/N
-  Instant - Y/N
-  Sorcery - Y/N
-  Creature - Y/N
-  Enchantment - Y/N
-  Artifact - Y/N
-  Legendary - Y/N
-
-Things after `-` in type line are probably less important, but could be:
-  Bird
-  Zombie
-  Human
-  etc.
+As an absolute baseline, we can assume that every card gets the average score
+that LSV has handed out, which turns out to be around `2.423502767991948`.
 
 
-Instant/Sorcery/Creature/Enchantment/Artifact (or combo of)
+RMSE: 1.142891810708898
 
 
-Step 2: 
+### Step 1: Linear regression against basic attributes
+

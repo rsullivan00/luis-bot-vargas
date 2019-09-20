@@ -9,6 +9,7 @@ verify_ssl = true
 pandas = "*"
 beautifulsoup4 = "*"
 requests = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "3.7"
