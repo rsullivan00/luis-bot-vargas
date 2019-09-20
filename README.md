@@ -50,7 +50,20 @@ Using
 - Rarity
 
 
+All models run with default options:
+
 Linear Regression:
 
-
 RMSE: 1.1080096806738646
+
+HistGradientBoostingRegressor:
+
+RMSE: 0.9919545420320893
+
+GradientBoostingRegressor:
+
+RMSE: 0.9604872808415652
+
+RandomForestRegressor:
+
+RMSE: 1.0239968641701904

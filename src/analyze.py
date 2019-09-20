@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 all_cards = pd.read_json("data/scryfall-default-cards.json")
 all_cards = all_cards[all_cards.lang == "en"]
@@ -32,10 +32,7 @@ train, test = train_test_split(features, test_size=0.2)
 # Train on `train`
 
 
-import pdb
-
-pdb.set_trace()
-model = LinearRegression().fit(train.drop("score_clean", 1), train.score_clean)
+model = RandomForestRegressor().fit(train.drop("score_clean", 1), train.score_clean)
 
 
 # Evaluate `test` into `test.prediction`
