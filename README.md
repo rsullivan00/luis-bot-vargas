@@ -67,3 +67,46 @@ RMSE: 0.9604872808415652
 RandomForestRegressor:
 
 RMSE: 1.0239968641701904
+
+
+### Step 2: Add Power/Toughness
+
+
+#### Using one-hot encoding for both
+
+GradientBoostingRegressor:
+
+RMSE: 0.9534546149704877
+
+#### Using numeric (coercing to 0)
+
+GradientBoostingRegressor:
+
+RMSE: 0.9475962823081454
+
+#### Using numeric (coercing `*` to 0) + one-hot
+
+GradientBoostingRegressor:
+
+RMSE: 0.922496900426324
+
+### Step 3: Add Mana Cost
+
+#### One-hot encoded
+
+GradientBoostingRegressor:
+
+RMSE: 0.9838816376488838
+
+#### Encoding color-specific
+
+I want to try encoding mana as multiple numeric features along the lines of:
+
+```
+mana_cost_colorless: 2
+mana_cost_B: 2 # Black
+mana_cost_W: 2 # White
+...
+mana_cost_B/W: 0 # B/W hybrid mana
+...
+```
