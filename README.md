@@ -41,5 +41,16 @@ that LSV has handed out, which turns out to be around `2.423502767991948`.
 RMSE: 1.142891810708898
 
 
-### Step 1: Linear regression against basic attributes
+### Step 1: Basic regression against attribute subset
 
+Using
+
+- CMC
+- All things in the Type Line ("Creature", "Enchantment", "Bear", etc.)
+- Rarity
+
+
+Linear Regression:
+
+
+RMSE: 1.1080096806738646

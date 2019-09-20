@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 all_cards = pd.read_json("data/scryfall-default-cards.json")
 all_cards = all_cards[all_cards.lang == "en"]
@@ -24,20 +25,23 @@ rarity_dummies = cards.rarity.str.get_dummies().add_prefix("rarity_")
 features = pd.concat(
     [cards[["score_clean", "cmc"]], rarity_dummies, type_line_dummies], axis=1
 )
+features = features.dropna()
 train, test = train_test_split(features, test_size=0.2)
 
 
 # Train on `train`
 
-mean_score = train.score_clean.mean()
 
 import pdb
 
 pdb.set_trace()
+model = LinearRegression().fit(train.drop("score_clean", 1), train.score_clean)
+
 
 # Evaluate `test` into `test.prediction`
 
-test["prediction"] = mean_score
+test["prediction"] = model.predict(test.drop("score_clean", 1))
+test["prediction"] = test.prediction.clip(upper=5.0, lower=0.0)
 
 # Score RMSE
 
