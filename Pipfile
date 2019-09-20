@@ -10,6 +10,7 @@ pandas = "*"
 beautifulsoup4 = "*"
 requests = "*"
 scikit-learn = "*"
+bert-embedding = "*"
 
 [requires]
 python_version = "3.7"
