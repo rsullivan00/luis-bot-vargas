@@ -98,19 +98,6 @@ GradientBoostingRegressor:
 
 RMSE: 0.9838816376488838
 
-#### Encoding color-specific
-
-I want to try encoding mana as multiple numeric features along the lines of:
-
-```
-mana_cost_colorless: 2
-mana_cost_B: 2 # Black
-mana_cost_W: 2 # White
-...
-mana_cost_B/W: 0 # B/W hybrid mana
-...
-```
-
 ### Step 4: Add BERT oracle text encoding
 
 RMSE: 0.902928983016964
@@ -219,3 +206,20 @@ type_line_Creature
 1    0.641529
 Name: abs_errors, dtype: float64
 ```
+
+### Step 5: Improve mana encoding
+
+#### Encoding color-specific
+
+Mana is now encoded as a series of integer features like:
+
+```
+mana_cost_colorless: 2
+mana_cost_b: 2 # Black
+mana_cost_w: 2 # White
+...
+mana_cost_b/w: 0 # B/W hybrid mana
+...
+```
+
+RMSE: 0.9269636374887835

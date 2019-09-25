@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.feature_extraction.text import CountVectorizer
 from bert_embedding import BertEmbedding
 import re
 import numpy as np
@@ -22,14 +23,6 @@ cards["score_clean"] = cards.score_clean.str.replace(
 cards["score_clean"] = pd.to_numeric(cards.score_clean, errors="coerce")
 cards["build_around"] = cards.score.str.contains("/")
 
-# Split cards are missing `mana_cost`, try getting it from `card_faces`
-# cards.loc[cards.mana_cost.isna(), "mana_cost"] = cards[
-#     cards.mana_cost.isna()
-# ].card_faces.apply(lambda cf: cf[0]["mana_cost"])
-
-# mana_costs_split = cards.mana_cost.apply(lambda mc: re.findall(r"{(.+?)}", mc))
-
-
 bert = BertEmbedding()
 
 
@@ -49,6 +42,30 @@ features = pd.DataFrame.from_items(
 features["power"] = pd.to_numeric(cards.power, errors="coerce").fillna(0)
 features["toughness"] = pd.to_numeric(cards.toughness, errors="coerce").fillna(0)
 
+
+def mana_tokenizer(s):
+    tokens = []
+    for mana_item in re.findall(r"{(.+?)}", s):
+        if mana_item.isdigit():
+            tokens.extend(["colorless"] * int(mana_item))
+        else:
+            tokens.append(mana_item)
+    return tokens
+
+
+# Split cards are missing `mana_cost`, try getting it from `card_faces`
+cards.loc[cards.mana_cost.isna(), "mana_cost"] = cards[
+    cards.mana_cost.isna()
+].card_faces.apply(lambda cf: cf[0]["mana_cost"])
+
+mana_vectorizer = CountVectorizer(tokenizer=mana_tokenizer)
+vectorized_mana = mana_vectorizer.fit_transform(cards.mana_cost)
+mana_cost_df = pd.DataFrame(
+    vectorized_mana.todense(), columns=mana_vectorizer.get_feature_names()
+).add_prefix("mana_cost_")
+features = features.join(mana_cost_df)
+
+
 type_line_dummies = cards.type_line.str.get_dummies(" ").add_prefix("type_line_")
 rarity_dummies = cards.rarity.str.get_dummies().add_prefix("rarity_")
 
@@ -57,14 +74,7 @@ power_dummies = cards.power.str.get_dummies().add_prefix("power_")
 toughness_dummies = cards.toughness.str.get_dummies().add_prefix("toughness_")
 
 features = pd.concat(
-    [
-        features,
-        cards.cmc,
-        rarity_dummies,
-        type_line_dummies,
-        power_dummies,
-        toughness_dummies,
-    ],
+    [features, rarity_dummies, type_line_dummies, power_dummies, toughness_dummies],
     axis=1,
 )
 
