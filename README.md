@@ -110,3 +110,7 @@ mana_cost_W: 2 # White
 mana_cost_B/W: 0 # B/W hybrid mana
 ...
 ```
+
+### Step 4: Add BERT oracle text encoding
+
+RMSE: 0.902928983016964

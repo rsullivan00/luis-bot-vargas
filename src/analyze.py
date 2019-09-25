@@ -79,9 +79,7 @@ features = pd.concat(
 # 2377   -4.035182
 #
 # Edit: Turns out that `score_clean` is NaN, should drop those rows going forward
-
-features = features.drop(2377)
-features.dropna()
+features = features[cards.score_clean.notna()]
 train, test = train_test_split(features, test_size=0.2)
 
 
