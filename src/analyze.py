@@ -67,18 +67,7 @@ features = pd.concat(
     ],
     axis=1,
 )
-# Something about index 2377 causes
-# *** ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-# The data appears fine on inspection, though.
-# (Pdb) train[-454:-453].isna().any(1)
-# 2377    False
-# (Pdb) train[-454:-453].max(axis=1)
-# 2377    2.0
-# dtype: float64
-# (Pdb) train[-454:-453].min(axis=1)
-# 2377   -4.035182
-#
-# Edit: Turns out that `score_clean` is NaN, should drop those rows going forward
+
 features = features[cards.score_clean.notna()]
 train, test = train_test_split(features, test_size=0.2)
 
