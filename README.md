@@ -223,3 +223,13 @@ mana_cost_b/w: 0 # B/W hybrid mana
 ```
 
 RMSE: 0.9269636374887835
+
+### Step 6: Try n-gram encoding
+
+2-4 grams
+
+RMSE: 0.9193461511900894
+
+1-4 grams
+
+RMSE: 0.9527470749862402

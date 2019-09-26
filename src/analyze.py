@@ -36,6 +36,7 @@ def embed_text(text):
 embedded_oracle_text = (
     cards.oracle_text.fillna("").map(embed_text).fillna(0)
 )  # Do I want to do this `fillna(0)`?
+# TODO: Verify that this zip from_items actually maps to the correct cards
 features = pd.DataFrame.from_items(
     zip(embedded_oracle_text.index, embedded_oracle_text.values)
 ).T
@@ -65,6 +66,10 @@ mana_cost_df = pd.DataFrame(
 ).add_prefix("mana_cost_")
 features = features.join(mana_cost_df)
 
+ngram_counter = CountVectorizer(ngram_range=(1, 4))
+oracle_ngrams = ngram_counter.fit_transform(cards.oracle_text.fillna(""))
+oracle_ngrams_df = pd.DataFrame(oracle_ngrams.todense()).add_prefix("ngram_")
+features = features.join(oracle_ngrams_df)
 
 type_line_dummies = cards.type_line.str.get_dummies(" ").add_prefix("type_line_")
 rarity_dummies = cards.rarity.str.get_dummies().add_prefix("rarity_")
