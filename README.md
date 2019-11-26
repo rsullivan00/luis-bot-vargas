@@ -233,3 +233,12 @@ RMSE: 0.9193461511900894
 1-4 grams
 
 RMSE: 0.9527470749862402
+
+
+#### Next
+
+- Grid search in sklearn to improve hyperparams
+- Test out if bag of words performs as well/better than BERT
+    - Do it without ngrams
+    - Add ngrams on top
+

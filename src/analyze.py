@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.feature_extraction.text import CountVectorizer
-from bert_embedding import BertEmbedding
 import re
 import numpy as np
 
@@ -23,23 +22,7 @@ cards["score_clean"] = cards.score_clean.str.replace(
 cards["score_clean"] = pd.to_numeric(cards.score_clean, errors="coerce")
 cards["build_around"] = cards.score.str.contains("/")
 
-bert = BertEmbedding()
-
-
-def embed_text(text):
-    embedding = bert([text])[0][1]
-    if embedding is not None:
-        return np.array(pd.Series(embedding).mean())
-    return np.zeros(768)
-
-
-embedded_oracle_text = (
-    cards.oracle_text.fillna("").map(embed_text).fillna(0)
-)  # Do I want to do this `fillna(0)`?
-# TODO: Verify that this zip from_items actually maps to the correct cards
-features = pd.DataFrame.from_items(
-    zip(embedded_oracle_text.index, embedded_oracle_text.values)
-).T
+features = pd.DataFrame()
 features["power"] = pd.to_numeric(cards.power, errors="coerce").fillna(0)
 features["toughness"] = pd.to_numeric(cards.toughness, errors="coerce").fillna(0)
 
@@ -66,7 +49,7 @@ mana_cost_df = pd.DataFrame(
 ).add_prefix("mana_cost_")
 features = features.join(mana_cost_df)
 
-ngram_counter = CountVectorizer(ngram_range=(1, 4))
+ngram_counter = CountVectorizer()
 oracle_ngrams = ngram_counter.fit_transform(cards.oracle_text.fillna(""))
 oracle_ngrams_df = pd.DataFrame(oracle_ngrams.todense()).add_prefix("ngram_")
 features = features.join(oracle_ngrams_df)
@@ -85,6 +68,8 @@ features = pd.concat(
 
 features = features[cards.score_clean.notna()]
 train, test = train_test_split(features, test_size=0.2)
+train = train.copy()
+test = test.copy()
 
 
 # Train on `train`
@@ -101,13 +86,9 @@ except:
 # Evaluate `test` into `test.prediction`
 
 test["prediction"] = model.predict(test)
-test["prediction"] = test.prediction.clip(upper=5.0, lower=0.0)
+test.prediction.clip(upper=5.0, lower=0.0, inplace=True)
 
 # Score RMSE
 
 rmse = ((test.prediction - cards.score_clean.loc[test.index]) ** 2).mean() ** 0.5
-print("RMSE: {}".format(rmse))
-
-import pdb
-
-pdb.set_trace()
+print(rmse)
