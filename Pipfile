@@ -11,6 +11,7 @@ beautifulsoup4 = "*"
 requests = "*"
 scikit-learn = "*"
 bert-embedding = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"
