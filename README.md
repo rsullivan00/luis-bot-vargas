@@ -242,3 +242,94 @@ RMSE: 0.9527470749862402
     - Do it without ngrams
     - Add ngrams on top
 
+
+#### Grammar
+
+Thoughts on the oracle text structure:
+
+*Keyword abilities*
+
+Sometimes, keyword abilities are separated by newlines
+```
+Flash
+Flying
+Dreamcaller Siren can block only creatures with flying.
+When Dreamcaller Siren enters the battlefield, if you control another Pirate, tap up to two target nonland permanents.
+```
+
+Sometimes, keyword abilities are templated together, comma delimited
+```
+Flying, menace
+```
+```
+This spell can't be countered.
+Trample, hexproof
+```
+
+
+*Activated Abilities*
+
+They always have <cost>: <effect>
+```
+{X}{G}{G}: Put X +1/+1 counters on target land you control. That land becomes a 0/0 Elemental creature with haste. It's still a land.
+```
+
+Multiple costs are comma-separated
+```
+{T}, Discard a card: Draw a card.
+```
+```
+{7}{U}, {T}, Sacrifice Shore Keeper: Draw three cards.
+```
+
+Multiple activated abilties are newline-separated
+```
+{T}: Add {C}.
+{1}, {T}: Add one mana of any color.
+```
+
+
+*Triggered abilities*
+
+```
+Whenever an opponent discards a card, that player loses 2 life.
+Raid — At the beginning of your end step, if you attacked with a creature this turn, target opponent discards a card.
+```
+
+```
+When Jungleborn Pioneer enters the battlefield, create a 1/1 blue Merfolk creature token with hexproof. (It can't be the target of spells or abilities your opponents control.)
+```
+
+Typically begin with clauses like `whenever x, y happens`.
+
+- `When ~ enters the battlefield`
+- `When ~ dies`
+- `Whenever you draw a card`
+- `Whenever you discard a card`
+
+*Planeswalkers*
+
+Follow the `<cost>: <effect>` format, where costs refer to loyalty changes.
+
+```
++2: Create a 2/2 black Pirate creature token with menace.
+−3: Destroy target artifact, creature, or enchantment. Create a Treasure token. (It's an artifact with "{T}, Sacrifice this artifact: Add one mana of any color.")
+−10: Target player's life total becomes 1.
+```
+
+With static abilies
+
+```
+Activated abilities of artifacts your opponents control can't be activated.
++1: Until your next turn, up to one target noncreature artifact becomes an artifact creature with power and toughness each equal to its converted mana cost.
+−2: You may choose an artifact card you own from outside the game or in exile, reveal that card, and put it into your hand.
+```
+
+*"Choose" effects*
+
+
+```
+Choose one or both —
+• Target creature gets -1/-1 until end of turn.
+• Put a +1/+1 counter on target creature.
+```
